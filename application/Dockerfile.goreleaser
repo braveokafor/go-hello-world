@@ -1,0 +1,16 @@
+# checkov:skip=CKV_DOCKER_7: "Ensure the base image uses a non latest version tag"
+FROM cgr.dev/chainguard/static:latest
+# Non-root user
+USER nobody
+
+# Add application binary created by goreleaser
+COPY go-hello-world /usr/local/bin/go-hello-world
+# Copy healthchecker
+COPY --from=braveokafor/healthchecker:latest /usr/local/bin/healthchecker /usr/local/bin/healthchecker
+
+HEALTHCHECK --interval=10s --timeout=2s --start-period=5s --retries=3 \
+    CMD ["healthchecker", "-url", "http://localhost:5000/healthz", "-status", "200", "-timeout", "2s"] || exit 1
+
+EXPOSE 5000
+
+ENTRYPOINT ["go-hello-world"]

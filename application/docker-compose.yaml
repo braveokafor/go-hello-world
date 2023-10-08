@@ -1,0 +1,47 @@
+version: "3"
+services:
+  go-hello-world:
+    build:
+      context: ./.
+      dockerfile: Dockerfile
+    container_name: go-hello-world
+    image: go-hello-world
+    ports:
+      - "80:5000"
+    environment:
+      NAME: Brave
+      MAX_SLEEP_MS: 600
+      ERROR_RATE: 0.15
+    networks:
+      - go-hello-world-network
+
+  prometheus:
+    image: cgr.dev/chainguard/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus_scrape_config.yaml:/etc/prometheus/prometheus.yml
+    #  - ./.data/prometheus:/prometheus  # Mount dir for Prometheus data
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    networks:
+      - go-hello-world-network
+
+  grafana:
+    image: grafana/grafana:10.0.5
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: NotSoSecret
+    volumes:
+      - ./configs/grafana_dashboard_config.yaml:/etc/grafana/provisioning/dashboards/dashboard_config.yaml
+      - ./configs/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./dashboards/go_hello_world.json:/etc/grafana/provisioning/dashboards/go_hello_world.json
+      - ./dashboards/go_runtime_exporter.json:/etc/grafana/provisioning/dashboards/go_runtime_exporter.json
+      - ./dashboards/go_runtime_metrics.json:/etc/grafana/provisioning/dashboards/go_runtime_metrics.json
+    networks:
+      - go-hello-world-network
+networks:
+  go-hello-world-network:
+    driver: bridge

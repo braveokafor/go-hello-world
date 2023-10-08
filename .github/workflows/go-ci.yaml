@@ -40,13 +40,15 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GO_VERSION }}
+          cache: false
 
       - name: Run Go Lint
         id: golangci-lint
         continue-on-error: true
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.54
+          version: v3.7.0
+          working-directory: ${{ env.GO_CODE_PATH }}
 
       - name: Run Checkov
         id: checkov
@@ -82,6 +84,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: ${{ env.GO_VERSION }}
+          cache: false
 
       - name: Test Go App
         id: test-go-app
@@ -121,9 +124,15 @@ jobs:
             const golintOutcome = "${{ needs.lint.outputs.golintOutcome }}";
             const checkovOutcome = "${{ needs.lint.outputs.checkovOutcome }}";
             const superlinterOutcome = "${{ needs.lint.outputs.superlinterOutcome }}";
-            const testOutcome = "${{ needs.test.outputs.testOutcome }}";
-            const testLog = JSON.parse(process.env.testLog);
             const buildOutcome = "${{ needs.test.outputs.buildOutcome }}";
+            const testOutcome = "${{ needs.test.outputs.testOutcome }}";
+
+            let testLog;
+            try {
+              testLog = JSON.parse(process.env.testLog);
+            } catch (e) {
+              testLog = '';
+            }
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
