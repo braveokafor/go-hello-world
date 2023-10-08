@@ -121,9 +121,15 @@ jobs:
             const golintOutcome = "${{ needs.lint.outputs.golintOutcome }}";
             const checkovOutcome = "${{ needs.lint.outputs.checkovOutcome }}";
             const superlinterOutcome = "${{ needs.lint.outputs.superlinterOutcome }}";
-            const testOutcome = "${{ needs.test.outputs.testOutcome }}";
-            const testLog = JSON.parse(process.env.testLog);
             const buildOutcome = "${{ needs.test.outputs.buildOutcome }}";
+            const testOutcome = "${{ needs.test.outputs.testOutcome }}";
+
+            let testLog;
+            try {
+              testLog = JSON.parse(process.env.testLog);
+            } catch (e) {
+              testLog = '';
+            }
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
