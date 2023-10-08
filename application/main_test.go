@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func Test_loadEnvConfig(t *testing.T) {
+func TestLoadEnvConfig(t *testing.T) {
 	tests := []struct {
 		envVars map[string]string
 		want    Config
@@ -63,7 +63,7 @@ func Test_loadEnvConfig(t *testing.T) {
 	}
 }
 
-func Test_getEnvOrDefault(t *testing.T) {
+func TestGetEnvOrDefault(t *testing.T) {
 	tests := []struct {
 		name string
 		key  string
@@ -86,7 +86,7 @@ func Test_getEnvOrDefault(t *testing.T) {
 	}
 }
 
-func Test_parseToInt(t *testing.T) {
+func TestParseToInt(t *testing.T) {
 	tests := []struct {
 		name    string
 		value   string
@@ -112,7 +112,7 @@ func Test_parseToInt(t *testing.T) {
 	}
 }
 
-func Test_parseToFloat(t *testing.T) {
+func TestParseToFloat(t *testing.T) {
 	tests := []struct {
 		name    string
 		value   string
@@ -138,7 +138,7 @@ func Test_parseToFloat(t *testing.T) {
 	}
 }
 
-func Test_greet(t *testing.T) {
+func TestGreet(t *testing.T) {
 	tests := []struct {
 		name       string
 		errorRate  float64
@@ -169,7 +169,7 @@ func Test_greet(t *testing.T) {
 	}
 }
 
-func Test_healthz(t *testing.T) {
+func TestHealthz(t *testing.T) {
 	tests := []struct {
 		name string
 		want string
