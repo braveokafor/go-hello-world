@@ -105,7 +105,14 @@ func parseToFloat(value string, envVar string) (float64, error) {
 func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)
-	loadEnvConfig()
+
+	envConf, err := loadEnvConfig()
+	if err != nil {
+		slog.LogAttrs(context.Background(), slog.LevelError, "Error loading environment variables", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
+	config = envConf
 
 	flag.StringVar(&config.serverPort, "port", config.serverPort, "Port on which the server runs")
 	flag.IntVar(&config.minSleepDurationMs, "min-sleep", config.minSleepDurationMs, "Min sleep duration in milliseconds to simulate work")
@@ -122,7 +129,7 @@ func main() {
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/healthz", healthz)
 
-	err := http.ListenAndServe(config.serverPort, nil)
+	err = http.ListenAndServe(config.serverPort, nil)
 	if err != nil {
 		slog.LogAttrs(context.Background(), slog.LevelError, "Error starting server", slog.String("error", err.Error()))
 		os.Exit(1)
