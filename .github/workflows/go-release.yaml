@@ -5,15 +5,13 @@ on:
   push:
     tags:
       - "v*"
-    paths:
-      - "application/**"
 
 permissions:
   contents: read
   id-token: write
 
 env:
-  GO_CODE_PATH: application
+  GO_CODE_PATH: .
   GO_VERSION: 1.21.1
   DOCKERHUB_REPO: braveokafor/go-hello-world
 
