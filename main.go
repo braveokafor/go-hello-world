@@ -45,13 +45,14 @@ var (
 func loadEnvConfig() (Config, error) {
 	var config Config
 
+	name := getEnvOrDefault("NAME", "Brave")
 	serverPort := getEnvOrDefault("SERVER_PORT", "5000")
-	config.serverPort = ":" + serverPort
-
 	minSleep := getEnvOrDefault("MIN_SLEEP_MS", "0")
 	maxSleep := getEnvOrDefault("MAX_SLEEP_MS", "0")
 	errorRate := getEnvOrDefault("ERROR_RATE", "0")
-	name := getEnvOrDefault("NAME", "Brave")
+
+	config.name = name
+	config.serverPort = serverPort
 
 	var err error
 	config.minSleepDurationMs, err = parseToInt(minSleep, "MIN_SLEEP_MS")
@@ -68,7 +69,6 @@ func loadEnvConfig() (Config, error) {
 	if err != nil {
 		return Config{}, err
 	}
-	config.name = name
 
 	return config, nil
 }
@@ -121,6 +121,8 @@ func main() {
 	flag.StringVar(&config.name, "name", config.name, "Name to be used in greeting")
 
 	flag.Parse()
+
+	config.serverPort = ":" + config.serverPort
 
 	rand.Seed(time.Now().UnixNano())
 	slog.LogAttrs(context.Background(), slog.LevelInfo, "Starting server", slog.String("port", config.serverPort), slog.Int("min-sleep", config.minSleepDurationMs), slog.Int("max-sleep", config.maxSleepDurationMs), slog.Float64("error-rate", config.errorRate), slog.String("name", config.name))
