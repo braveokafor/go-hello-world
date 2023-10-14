@@ -27,7 +27,7 @@ type Config struct {
 
 // Initialising default configuration values.
 var config = Config{
-	serverPort:         ":5000",
+	serverPort:         "5000",
 	minSleepDurationMs: 0,
 	maxSleepDurationMs: 0,
 	errorRate:          0.0,
