@@ -1,0 +1,46 @@
+
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Description
+
+{{ template "chart.description" . }}
+
+## Usage
+
+### Add Helm repository
+
+```shell
+helm repo add hello-world https://braveokafor.github.io/go-hello-world/
+helm repo update
+```
+
+### Install Helm chart
+
+Using default configurations:
+
+```bash
+helm install --generate-name hello-world/hello-world
+```
+
+Customising configurations:
+
+```bash
+helm install --generate-name --set ingress.enabled=true, hello-world/hello-world
+```
+
+## Configuration
+
+The following table lists the configurable parameters of the Hello-World chart and their default values.
+
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.maintainersSection" . }}
+

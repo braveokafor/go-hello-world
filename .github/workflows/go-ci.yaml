@@ -54,16 +54,6 @@ jobs:
           directory: ${{ env.GO_CODE_PATH }}
           quiet: true
 
-      - name: Run Super-Linter
-        id: super-linter
-        uses: super-linter/super-linter@v5
-        continue-on-error: true
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_GO: true
-
   test:
     runs-on: ubuntu-latest
     outputs:

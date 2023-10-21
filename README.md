@@ -27,10 +27,17 @@ This Go application extends beyond the conventional greeting, integrating Promet
 
 ### Docker-Compose Deployment & Grafana Dashboards
 
-A `docker-compose.yaml` file is available in the project repository to facilitate the deployment of the application alongside the necessary monitoring tools.  
+A [`docker-compose.yaml`](https://github.com/braveokafor/go-hello-world/blob/main/docker-compose.yaml) file is available in the project repository to facilitate the deployment of the application alongside the necessary monitoring tools.  
 This configuration allows for an integrated environment where the application’s metrics can be easily visualised and analysed.
 
 Example Grafana dashboards are also provided in the repository, offering a starting point for monitoring the application’s performance and behaviour.
+
+
+### Helm Chart
+
+A [helm chart](https://github.com/braveokafor/go-hello-world/blob/main/charts/go-hello-world) is available in the project repository for deploying the application on Kubernetes.  
+A [README](https://github.com/braveokafor/go-hello-world/blob/main/charts/go-hello-world/README.md) is also available in `charts/go-hello-world/`.
+
 
 ## Installation
 Download the appropriate binary for your operating system from the [GitHub Releases page](https://github.com/braveokafor/go-hello-world/releases).

@@ -1,0 +1,63 @@
+# -- Runtime configurations
+runtimeConfigs:
+  # -- Port on which the server will run
+  serverPort: 5000
+  # -- Minimum sleep duration in milliseconds
+  minSleepMs: 0
+  # -- Maximum sleep duration in milliseconds
+  maxSleepMs: 1050
+  # -- Error rate as a float (e.g., 0.15 equals 15% errors)
+  errorRate: 0.15
+  # -- Name configuration
+  name: "Brave"
+
+# -- Deployment configurations
+deployment:
+  # -- Number of replicas for the deployment
+  replicaCount: 1
+  image:
+    # -- Repository of the image
+    repository: braveokafor/go-hello-world
+    # -- Tag of the image
+    tag: latest
+    # -- Pull policy of the image
+    pullPolicy: IfNotPresent
+  # -- Resource requests and limits
+  resources:
+    requests:
+      cpu: 128m
+      memory: 256Mi
+    limits:
+      cpu: 128m
+      memory: 256Mi
+  # -- Liveness probe configurations
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    path: /healthz
+  # -- Port on which the container will run
+  containerPort: 5000
+
+# -- Service configurations
+service:
+  # -- Port on which the service will be exposed
+  port: 80
+  # -- Type of the service (e.g., ClusterIP, NodePort, LoadBalancer)
+  type: ClusterIP
+  # -- Additional annotations for the service
+  annotations: {}
+
+# -- Ingress configurations
+ingress:
+  # -- Enable or disable ingress
+  enabled: false
+  # -- Class name of the ingress
+  ingressClassName: 
+  # -- Additional annotations for the ingress
+  annotations: {}
+  hosts:
+    - host: 
+      paths:
+        - /
+  # -- TLS configurations for the ingress
+  tls: []

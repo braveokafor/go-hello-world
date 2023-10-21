@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hello-world.name" . }}
+  labels:
+    chart: {{ include "hello-world.fullname" . }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "hello-world.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "hello-world.name" . }}
+    spec:
+      containers:
+        - name: {{ include "hello-world.name" . }}
+          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployment.livenessProbe.path | default "/" }}
+              port: {{ .Values.deployment.containerPort }}
+            initialDelaySeconds:
+              {{ .Values.deployment.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployment.livenessProbe.periodSeconds }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.deployment.containerPort }}
+              protocol: TCP                 
+          resources:
+            requests:
+              cpu: {{ .Values.deployment.resources.requests.cpu }}
+              memory: {{ .Values.deployment.resources.requests.memory }} 
+            limits:
+              cpu: {{ .Values.deployment.resources.limits.cpu }}
+              memory: {{ .Values.deployment.resources.limits.memory }} 
+          env:
+            {{- with .Values.runtimeConfigs }}
+            {{- if .serverPort }}
+            - name: SERVER_PORT
+              value: "{{ .serverPort }}"
+            {{- end }}
+            {{- if .minSleepMs }}
+            - name: MIN_SLEEP_MS
+              value: "{{ .minSleepMs }}"
+            {{- end }}
+            {{- if .maxSleepMs }}
+            - name: MAX_SLEEP_MS
+              value: "{{ .maxSleepMs }}"
+            {{- end }}
+            {{- if .errorRate }}
+            - name: ERROR_RATE
+              value: "{{ .errorRate }}"
+            {{- end }}
+            {{- if .name }}
+            - name: NAME
+              value: "{{ .name }}"
+            {{- end }}
+            {{- end }}
