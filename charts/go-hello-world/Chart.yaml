@@ -1,0 +1,14 @@
+apiVersion: v2
+name: hello-world
+description: \"Hello World\" application with Prometheus Metrics.
+icon: https://upload.wikimedia.org/wikipedia/commons/2/28/HelloWorld.svg
+type: application
+version: 0.0.1
+appVersion: 0.0.2
+home: https://github.com/braveokafor/go-hello-world/
+sources:
+  - https://github.com/braveokafor/go-hello-world/
+maintainers:
+  - email: okaforbrave@gmail.com
+    name: Brave Okafor
+    url: https://www.linkedin.com/in/braveokafor/
